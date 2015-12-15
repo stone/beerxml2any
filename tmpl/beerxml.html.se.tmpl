@@ -1,0 +1,124 @@
+<html>
+<head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<style>
+table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+thead th {
+  background-color: #006DCC;
+  color: white;
+}
+
+tbody td {
+  background-color: #EEEEEE;
+}
+
+tr td:first-child,
+tr th:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+tr td:last-child,
+tr th:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+
+<div class="row clearfix">
+<h1>{{ .Name }} - {{ .Type }}</h1>
+</div>
+
+
+<div class="row clearfix">
+    <div class="col-md-6 column">
+        <h2>Bryggningsdetaljer</h2>
+        <table class="table table-striped">
+            <tr><td><strong>Batchstorlek</strong></td><td>{{ .DisplayBatchSize }}</td></tr>
+            <tr><td><strong>Kokvolym</strong></td><td>{{ .DisplayBatchSize}}</td></tr>
+            <tr><td><strong>OG (est)</strong></td><td>{{ .EstOg }}</td></tr>
+            <tr><td><strong>FG (est)</strong></td><td>{{ .EstFg }}</td></tr>
+            <tr><td><strong>Bitterhet</strong></td><td>{{ .Ibu }}</td></tr>
+            <tr><td><strong>Effektivitet</strong></td><td>{{ .Efficiency | printf "%v" }}%</td></tr>
+            <tr><td><strong>Alkohol (est)</strong></td><td>{{ .Abv }} (volymprocent)</td></tr>
+            <tr><td><strong>Färg (est)</strong></td><td>{{ .EstColor }}</td></tr>
+        </table>
+
+    </div>
+</div>
+
+
+<div class="row clearfix">
+    <h2>Fermentering</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed table-striped ">
+        <thead><tr><th>What</th><th>Age</th></thead>
+        <tr><td><strong>Primärjäsning</strong></td><td>{{ .PrimaryAge }} dagar</td></tr>
+        <tr><td><strong>Sekundärjäsning</strong></td><td>{{ .SecondaryAge }} dagar</td></tr>
+        <tr><td><strong>Konditionering</strong></td><td>{{ .TertiaryAge }} dagar</td></tr>
+    </table>
+</div>
+
+
+<div class="row clearfix">
+    <h2>Malt och annat fermenteringsbart</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed table-striped">
+        <thead><tr><th>Vikt</th><th>Namn</th></tr></thead>
+        {{with .Fermentables}}{{range .}}
+        <tr><td><strong>{{ .DisplayAmount }}</strong></td><td>{{ .Name }}</td></tr>
+        {{end}}{{end}}
+    </table>
+</div>
+
+
+<div class="row clearfix">
+    <h2>Humle</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed table-striped">
+        <thead><tr><th>Vikt</th><th>Namn</th><th>Format</th><th>Alfasyra</th><th>Tid</th></tr></thead>
+        {{with .Hops}}{{range .}}
+
+        <tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .Form }}</td><td> {{ .Alpha }} AA%</td><td> {{ .DisplayTime }}</td></tr>
+        {{end}}{{end}}
+    </table>
+</div>
+
+
+{{ if .Miscs }}
+<div class="row clearfix">
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed table-striped">
+        <thead><tr><th>Mängd</th><th>Namn</th><th>Typ</th><th>Användning</th><th>Tid</th></tr></thead>
+        {{with .Miscs}}{{range .}}
+        <tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .Type }}</td><td> {{ .Use }} </td><td> {{ .DisplayTime }}</td></tr>
+        {{end}}{{end}}
+    </table>
+</div>
+{{ end }}
+
+
+<div class="row clearfix">
+    <h2>Jäst</h2>
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed table-striped">
+        <thead><tr><th>Mängd</th><th>Namn</th><th>Produkt</th><th>Typ</th></tr></thead>
+        {{with .Yeasts}}{{range .}}
+        <tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .ProductId }}</td><td> {{ .Type }} </td></tr>
+        {{end}}{{end}}
+    </table>
+</div>
+
+<small>
+Denna rapport är genererad från BeerSmith export av BeerXML och genererad
+med hjälp av [github.com/stone/beerxml](beerxml) Go package.
+</small>
+
+</div>
+
+</body>
+</html>

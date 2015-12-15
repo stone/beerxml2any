@@ -1,0 +1,88 @@
+**The Bends Brewery Recept Rapport**
+
+
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<tr>
+    <td><strong>Namn</strong></td><td>{{ .Name }}</td>
+</tr>
+<tr>
+    <td><strong>Typ</strong></td><td>{{ .Type }}</td>
+</tr>
+</table>
+
+
+
+Bryggningsdetaljer
+-------------------
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<tr><td><strong>Batchstorlek</strong></td><td>{{ .DisplayBatchSize }}</td></tr>
+<tr><td><strong>Kokvolym</strong></td><td>{{ .DisplayBatchSize}}</td></tr>
+<tr><td><strong>OG (est)</strong></td><td>{{ .EstOg }}</td></tr>
+<tr><td><strong>FG (est)</strong></td><td>{{ .EstFg }}</td></tr>
+<tr><td><strong>Bitterhet</strong></td><td>{{ .Ibu }}</td></tr>
+<tr><td><strong>Effektivitet</strong></td><td>{{ .Efficiency | printf "%v" }}%</td></tr>
+<tr><td><strong>Alkohol (est)</strong></td><td>{{ .Abv }} (volymprocent)</td></tr>
+<tr><td><strong>Färg (est)</strong></td><td>{{ .EstColor }}</td></tr>
+</table>
+
+
+Fermentering
+-------------
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<tr><td><strong>Primärjäsning</strong></td><td>{{ .PrimaryAge }} dagar</td></tr>
+<tr><td><strong>Sekundärjäsning</strong></td><td>{{ .SecondaryAge }} dagar</td></tr>
+<tr><td><strong>Konditionering</strong></td><td>{{ .TertiaryAge }} dagar</td></tr>
+</table>
+
+
+Malt och annat fermenteringsbart:
+---------------------------------
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<thead><tr><th>Vikt</th><th>Namn</th></thead>
+{{with .Fermentables}}{{range .}}
+<tr><td><strong>{{ .DisplayAmount }}</strong></td><td>{{ .Name }}</td></tr>
+{{end}}{{end}}
+</table>
+
+
+
+Humle:
+-----
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<thead><tr><th>Vikt</th><th>Namn</th><th>Format</th><th>Alfasyra</th><th>Tid</th></thead>
+{{with .Hops}}{{range .}}
+
+<tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .Form }}</td><td> {{ .Alpha }} AA%</td><td> {{ .DisplayTime }}</td></tr>
+
+{{end}}{{end}}
+</table>
+
+
+{{ if .Miscs }}
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<thead><tr><th>Mängd</th><th>Namn</th><th>Typ</th><th>Användning</th><th>Tid</th></thead>
+{{with .Miscs}}{{range .}}
+<tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .Type }}</td><td> {{ .Use }} </td><td> {{ .DisplayTime }}</td></tr>
+{{end}}{{end}}
+</table>
+{{ end }}
+
+
+Jäst
+-----
+<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-condensed">
+<thead><tr><th>Mängd</th><th>Namn</th><th>Produkt</th><th>Typ</th></thead>
+{{with .Yeasts}}{{range .}}
+<tr><td>{{ .DisplayAmount }}</td><td>{{ .Name }}</td><td> {{ .ProductId }}</td><td> {{ .Type }} </td></tr>
+{{end}}{{end}}
+</table>
+
+<small>
+Denna rapport är genererad från BeerSmith export av BeerXML och genererad
+med hjälp av [github.com/stone/beerxml](beerxml) Go package.
+</small>
+

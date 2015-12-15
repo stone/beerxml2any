@@ -1,0 +1,44 @@
+[b]Name:[/b] {{ .Name }}
+[b]Type:[/b] {{ .Type }}
+[b]Style:[/b] {{ .Style.Name }}
+
+[size=100]Recipe Specifications[/size]
+
+[b]Batch Size:[/b]              {{ .DisplayBatchSize }}
+[b]Boil Size:[/b]               {{ .DisplayBoilSize }}
+[b]Estimated OG:[/b]            {{ .EstOg }}
+[b]Estimated Color:[/b]         {{ .EstFg }}
+[b]Estimated IBU:[/b]           {{ .Ibu }}
+[b]Brewhouse Efficiency:[/b]    {{ .Efficiency | printf "%v" }}%
+[b]Boil Time:[/b]               {{ .BoilTime }} Minutes
+[b]Estimated ABV:[/b]           {{ .Abv }} %
+
+
+[size=150]Ferm Process[/size]
+{{with .Yeasts}}{{range .}}{{ .DisplayAmount }}    {{ .Name }}    {{ .Laboratory }} {{ .ProductId }} ({{ .Type }}){{end}}{{end}}
+
+[b]Primary[/b]: {{ .PrimaryAge}} days
+[b]Secondary[/b]: {{ .SecondaryAge }} days
+
+
+[size=150]Ingredients[/size]
+[code]
+{{ with .Fermentables }}{{ range .}}{{ .DisplayAmount }}    {{ .Name }}
+{{ end }}{{ end }}[/code]
+
+
+[size=150]Hops[/size]
+[code]
+{{with .Hops}}{{range .}}{{ .DisplayAmount }}    {{ .DisplayTime }}    {{ .Name }} - {{ .Alpha }} AA%
+{{end}}{{end}}[/code]
+
+[size=150]Mash - {{ .Mash.Name }}[/size]
+[code]{{with .Mash.MashSteps }}{{range .}}
+{{.Name }}: {{.StepTime}} minutes at {{.DisplayStepTemp}}{{end}}{{end}}
+[/code]
+
+
+{{ if .Miscs }}
+[size=150]Other[/size]
+{{with .Miscs}}{{range .}}{{ .DisplayAmount }}    {{ .DisplayTime }}    {{ .Name }}    {{ .Type }}    {{ .Use }}{{else}}nada{{end}}{{end}}
+{{ end }}
